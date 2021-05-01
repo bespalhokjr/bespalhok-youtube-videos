@@ -90,7 +90,7 @@
         // $chave = get_option('bespalhok_youtubevideos_menu_secao_config_chave');
         $chave = substr( esc_attr(get_option('bespalhok_youtubevideos_menu_secao_config_chave')), 0, 10) . '...';
         ?>
-            <input style="width: 100%; max-width: 400px;" type="text" id="bespalhok_youtubevideos_menu_secao_config_chave" name="bespalhok_youtubevideos_menu_secao_config_chave" value="<?php echo $chave; ?>">
+            <input style="width: 100%; max-width: 400px;" type="password" id="bespalhok_youtubevideos_menu_secao_config_chave" name="bespalhok_youtubevideos_menu_secao_config_chave" value="<?php echo $chave; ?>">
             <p style="margin-left: 2px; font-size: 11px; margin-top: 5px;">não sabe onde conseguir chave API youtube ? <a target="_blank" href="https://www.google.com/search?q=Como+obter+a+API+do+YouTube">clique aqui</p>
         <?php
     }
