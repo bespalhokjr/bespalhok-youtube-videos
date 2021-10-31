@@ -4,7 +4,7 @@
         Text Domain: bespalhok-youtube-videos
         Description: Adicione os últimos videos de um canal do youtube
         Author: Paulo R Bespalhok Junior
-        Author URI: https://www.linkedin.com/in/paulo-roberto-bespalhok-junior-34883756/
+        Author URI: bespalhok.dev
     */
 
     // checamos se foi uma requisição do wordpress, para evitar acesso externo

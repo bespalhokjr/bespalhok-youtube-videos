@@ -72,9 +72,24 @@
             $html .= '<div class="bespalhok_youtubevideos_container">';
             foreach($vds as $v){
                 $html .= '<div class="bespalhok_youtubevideos_container__video '.$quantidade_de_colunas.' '.$widget.'">';
-                    $html .= '<div class="bespalhok_youtubevideos_container__video_container">';
-                        $html .= '<iframe class="fitvidsignore " frameborder="0" allowfullscreen="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" width="640" height="360" src="https://www.youtube.com/embed/'.$v['video_id'].'?controls=1&amp;rel=0&amp;playsinline=0&amp;modestbranding=0&amp;autoplay=0&amp;enablejsapi=1&amp;"></iframe>';
-                    $html .= '</div>';
+
+                    // verificamos se devemos ou nao carregar o iframe
+                    $exibir_thumbnail_preview = (get_option('bespalhok_youtube_videos_thumbnail_preview') == 'on') ? true : false;
+                    
+                    if($exibir_thumbnail_preview){
+                        
+                        $img_preview_src = 'https://img.youtube.com/vi/'. $v['video_id'] .'/sddefault.jpg';
+
+                        $html .= '<div data-id="'. $v['video_id'] .'" class="bespalhok_youtubevideos_container__video_container preview-thumb" style="background-image: url(' . $img_preview_src . ')"></div>';
+
+                    }else{
+                        $html .= '<div class="bespalhok_youtubevideos_container__video_container">';
+                            $html .= '<iframe class="fitvidsignore" frameborder="0" allowfullscreen="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" width="640" height="360" src="https://www.youtube.com/embed/'.$v['video_id'].'?controls=1&rel=0&playsinline=0&modestbranding=0&enablejsapi=1&mute=0"></iframe>';
+                        $html .= '</div>';
+                    }
+                        
+                    
+
                 $html .= '</div>';
             }
 
