@@ -1,6 +1,7 @@
 <?php   
 
     function bespalhok_youtubevideos_menu_secao_config(){
+            
             add_settings_section(
                 'bespalhok_youtubevideos_menu_secao_config', // grupo
                 'Configurações', // titulo
@@ -67,7 +68,7 @@
                 'verifica_colunas' // call back
             );
 
-            // Cache
+            // Cache ============================================================================
             add_settings_field(
                 'bespalhok_youtube_videos_cache', // id
                 'Tempo do cache', // titulo
@@ -81,6 +82,22 @@
                 'bespalhok_youtubevideos_menu_secao_config_cache', // name
                 'verifica_cache' // call back
             );
+
+            // Ativar preview thumbnail =========================================================
+            add_settings_field(
+                'bespalhok_youtube_videos_thumbnail_preview', // id/name
+                'Ativar thumbnail preview', // titulo
+                'bespalhok_youtube_videos_thumbnail_preview_callback', // callback
+                'configurar-youtube-videos', // pagina
+                'bespalhok_youtubevideos_menu_secao_config' // secao
+            );
+
+            register_setting(
+                'bespalhok_youtubevideos_menu_secao_config', // grupo
+                'bespalhok_youtube_videos_thumbnail_preview', // name
+            );
+
+
     }
     function bespalhok_youtubevideos_menu_secao_config_detalhes(){
         ?> <p>Preencha as configurações abaixo</p> <?php
@@ -133,6 +150,20 @@
                 <option <?php if($q == '600'){echo 'selected'; } ?> value="600">10 Horas</option>
             </select>
             <p style="margin-left: 2px; font-size: 11px; margin-top: 5px;">quanto maior o tempo de cache, menos requisições são feitas para API</p>
+        <?php
+    }
+
+    function bespalhok_youtube_videos_thumbnail_preview_callback(){
+        
+        $q = get_option('bespalhok_youtube_videos_thumbnail_preview');
+        
+        $checked = ($q == 'on') ? 'checked' : '';
+
+        ?>
+            <label for="bespalhok_youtube_videos_thumbnail_preview">
+                <input <?php echo $checked ?> type="checkbox" name="bespalhok_youtube_videos_thumbnail_preview" id="bespalhok_youtube_videos_thumbnail_preview">
+                exibir thumbnails como preview ao invés de carregar o iframe
+            </label>
         <?php
     }
 

@@ -10,25 +10,34 @@
             'quantidade_de_videos' => false,
         ], $atts);
 
-        $widget = ($atts['widget']) ? 'widget' : '';
-
+        // adicionar a classe .widget no container do video
+        $widget_class = ($atts['widget']) ? 'widget' : '';
+        
+        // ID do canal
         $id_do_canal = get_option('bespalhok_youtubevideos_menu_secao_config_canal');
+        // chave da API
         $chave = get_option('bespalhok_youtubevideos_menu_secao_config_chave');
         
+        // tempo de cache definido
         $tempo_do_cache = get_option('bespalhok_youtubevideos_menu_secao_config_cache');
         $tempo_do_cache = (!(empty($tempo_do_cache))) ? intval($tempo_do_cache) : 600;
         
+        // quantidade de videos para exibir
         $quantidade_de_videos = get_option('bespalhok_youtubevideos_menu_secao_config_quantidade');
         $quantidade_de_videos = (!(empty($quantidade_de_videos))) ? intval($quantidade_de_videos) : 4;
         if($atts['quantidade_de_videos']){ $quantidade_de_videos = $atts['quantidade_de_videos']; }
 
+        // quantidade de colunas
         $quantidade_de_colunas = get_option('bespalhok_youtubevideos_menu_secao_config_colunas');
         $quantidade_de_colunas = (!(empty($quantidade_de_colunas))) ? "_{$quantidade_de_colunas}_colunas" : '_2_colunas';
         
-        $transient_name = 'bespalhok_youtubevideos_api_' . hash('md5', $id_do_canal . '_' . $chave . '_' . $quantidade_de_videos . '_' . $quantidade_de_colunas . '_' . $tempo_do_cache) ;
+        // nome do transient no banco de dados
+        $transient_name = 'bespalhok_youtubevideos_api_cache';
         
+        // url da API do youtube
         $url_api = 'https://www.googleapis.com/youtube/v3/search?part=snippet&channelId='.$id_do_canal.'&maxResults='.$quantidade_de_videos.'&order=date&type=video&key='.$chave;
 
+        // obtemos o cache
         $cache = get_transient( $transient_name );
         
         if(empty($cache)){
@@ -71,10 +80,25 @@
 
             $html .= '<div class="bespalhok_youtubevideos_container">';
             foreach($vds as $v){
-                $html .= '<div class="bespalhok_youtubevideos_container__video '.$quantidade_de_colunas.' '.$widget.'">';
-                    $html .= '<div class="bespalhok_youtubevideos_container__video_container">';
-                        $html .= '<iframe class="fitvidsignore " frameborder="0" allowfullscreen="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" width="640" height="360" src="https://www.youtube.com/embed/'.$v['video_id'].'?controls=1&amp;rel=0&amp;playsinline=0&amp;modestbranding=0&amp;autoplay=0&amp;enablejsapi=1&amp;"></iframe>';
-                    $html .= '</div>';
+                $html .= '<div class="bespalhok_youtubevideos_container__video '.$quantidade_de_colunas.' '.$widget_class.'">';
+
+                    // verificamos se devemos ou nao carregar o iframe
+                    $exibir_thumbnail_preview = (get_option('bespalhok_youtube_videos_thumbnail_preview') == 'on') ? true : false;
+                    
+                    if($exibir_thumbnail_preview){
+                        
+                        $img_preview_src = 'https://img.youtube.com/vi/'. $v['video_id'] .'/sddefault.jpg';
+
+                        $html .= '<div data-id="'. $v['video_id'] .'" class="bespalhok_youtubevideos_container__video_container preview-thumb" style="background-image: url(' . $img_preview_src . ')"></div>';
+
+                    }else{
+                        $html .= '<div class="bespalhok_youtubevideos_container__video_container">';
+                            $html .= '<iframe class="fitvidsignore" frameborder="0" allowfullscreen="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" width="640" height="360" src="https://www.youtube.com/embed/'.$v['video_id'].'?controls=1&rel=0&playsinline=0&modestbranding=0&enablejsapi=1&mute=0"></iframe>';
+                        $html .= '</div>';
+                    }
+                        
+                    
+
                 $html .= '</div>';
             }
 

@@ -6,7 +6,7 @@
             plugins_url() . '/bespalhok-youtube-videos/js/bespalhok_youtubevideos_script.js', // script
             ['jquery'], // dependencias
             null, // versionamento
-            true // no footer
+            false // no footer
         );
     }
 

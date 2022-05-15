@@ -1,41 +1,17 @@
 function videosYoutube(){
-	
-    jQuery('.youtube_video').each(function(i, e){
+	jQuery('.bespalhok_youtubevideos_container__video_container.preview-thumb').click(function(){
+		
+		let id = jQuery(this).data('id');
 
-		let video = jQuery(e);
-		let id = video.attr('id');
-		let videoId = video.data('video-id');
-		let img = 'https://img.youtube.com/vi/'+videoId+'/sddefault.jpg';
-		let alturaProp = (parseInt(parseFloat(video.outerWidth()) / 1.7777) + 1);
-
-		video.attr('style', `
-			background: url(${img}) center center #ddd;
-			background-size: cover;
-			width: 100%;
-			height: ${alturaProp}px;
+		jQuery(this).html(`
+			<iframe class="fitvidsignore" frameborder="0" allowfullscreen="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" width="640" height="360" src="https://www.youtube.com/embed/${id}?controls=1&rel=0&playsinline=0&modestbranding=0&autoplay=1&enablejsapi=1&mute=0"></iframe>
 		`);
 
-		jQuery( window ).resize(function() {
-			jQuery('#'+id).css('height',  (parseInt(parseFloat(jQuery('#'+id).outerWidth()) / 1.7777) + 1));
-		});
-
-		video.addClass('mouse_hover_cursor');		
-		jQuery('#'+id).click(function(){
-			let player = new YT.Player(id, {
-				videoId: videoId,
-				events : {
-					'onReady': onPlayerReady,
-					'onStateChange': onPlayerStateChange
-				}
-			});
-		});
-		function onPlayerReady(event) {event.target.playVideo(); }
-		function onPlayerStateChange(event) { if (event.data == YT.PlayerState.ENDED) { player.stopVideo(); }}
+		console.log('clickou');
 	});
-
 }
 
 /* Roda depois da página carregada */
 jQuery(document).ready(function(){
-	// videosYoutube();
+	videosYoutube();
 });
